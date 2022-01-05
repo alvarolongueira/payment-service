@@ -1,13 +1,13 @@
 package com.alvarolongueira.paymentservice.consumer;
 
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import com.alvarolongueira.paymentservice.incoming.IncomingService;
 import com.alvarolongueira.paymentservice.incoming.model.IncomingPayment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Component
+@Controller
 public class KafkaConsumer {
 
     private final IncomingService incomingService;

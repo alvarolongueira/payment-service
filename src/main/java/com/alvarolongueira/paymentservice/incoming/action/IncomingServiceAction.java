@@ -2,34 +2,56 @@ package com.alvarolongueira.paymentservice.incoming.action;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alvarolongueira.paymentservice.business.ProcessPaymentOfflineService;
 import com.alvarolongueira.paymentservice.business.ProcessPaymentOnlineService;
 import com.alvarolongueira.paymentservice.domain.Payment;
 import com.alvarolongueira.paymentservice.domain.PaymentType;
+import com.alvarolongueira.paymentservice.exception.PaymentServiceException;
+import com.alvarolongueira.paymentservice.exception.PaymentServiceExceptionHandler;
 import com.alvarolongueira.paymentservice.exception.error.PaymentTypeNotFoundException;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPaymentConverter;
+import com.alvarolongueira.paymentservice.exception.model.ServiceInvocation;
 import com.alvarolongueira.paymentservice.incoming.IncomingService;
 import com.alvarolongueira.paymentservice.incoming.model.IncomingPayment;
 
 @Component
 public class IncomingServiceAction implements IncomingService {
 
+    @Autowired
     private ProcessPaymentOnlineService onlineService;
+
+    @Autowired
     private ProcessPaymentOfflineService offlineService;
+
+    @Autowired
+    private PaymentServiceExceptionHandler exceptionHandler;
 
     @Override
     public void processOnlinePayment(IncomingPayment incoming) {
-        Payment payment = this.convert(incoming);
-        this.onlineService.process(payment);
+        this.handler(() -> {
+            Payment payment = this.convert(incoming);
+            this.onlineService.process(payment);
+        });
     }
 
     @Override
     public void processOfflinePayment(IncomingPayment incoming) {
-        Payment payment = this.convert(incoming);
-        this.offlineService.process(payment);
+        this.handler(() -> {
+            Payment payment = this.convert(incoming);
+            this.offlineService.process(payment);
+        });
+    }
+
+    private void handler(ServiceInvocation invocation) {
+        try {
+            invocation.invoke();
+        } catch (PaymentServiceException exception) {
+            this.exceptionHandler.process(exception);
+        }
     }
 
     private Payment convert(IncomingPayment incoming) {

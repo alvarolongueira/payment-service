@@ -20,8 +20,6 @@ spring:
 ---
 spring:
   profiles: test
-  jpa:
-    show_sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/payments
     username: tech

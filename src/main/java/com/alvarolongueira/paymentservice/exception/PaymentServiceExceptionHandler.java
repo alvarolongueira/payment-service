@@ -1,14 +1,17 @@
 package com.alvarolongueira.paymentservice.exception;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice(basePackages = "com.alvarolongueira.paymentservice")
+@Component
 public class PaymentServiceExceptionHandler {
 
     @ExceptionHandler(PaymentServiceException.class)
-    public void handleException(PaymentServiceException exception) {
+    public void process(PaymentServiceException exception) {
         //TODO this
+
+        System.err.println("CUSTOM ERROR -> " + exception.getErrorPayment());
+
     }
 
 }

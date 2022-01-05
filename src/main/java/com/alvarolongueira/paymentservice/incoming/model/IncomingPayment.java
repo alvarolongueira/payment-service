@@ -5,10 +5,12 @@ import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Data
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class IncomingPayment {
 
     private String payment_id;
@@ -21,4 +23,5 @@ public class IncomingPayment {
 
     private BigDecimal amount;
 
+    private int delay;
 }
