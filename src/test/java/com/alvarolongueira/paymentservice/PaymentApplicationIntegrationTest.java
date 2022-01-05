@@ -1,4 +1,4 @@
-package com.alvarolongueira.paymentservice.integration;
+package com.alvarolongueira.paymentservice;
 
 import org.junit.Test;
 
