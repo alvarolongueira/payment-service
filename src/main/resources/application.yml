@@ -6,6 +6,12 @@ kafka:
   topic:
     onlinePayment: online
     offlinePayment: offline
+external:
+  system:
+    logger:
+      uri: http://localhost:9000/log
+    payment:
+      uri: http://localhost:9000/payment
 ---
 spring:
   jpa:
@@ -26,3 +32,4 @@ spring:
     password: test
   kafka:
     bootstrap-servers: localhost:29092
+---

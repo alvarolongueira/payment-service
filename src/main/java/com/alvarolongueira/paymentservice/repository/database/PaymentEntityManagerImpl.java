@@ -14,7 +14,7 @@ import com.alvarolongueira.paymentservice.repository.entity.PaymentEntity;
 @Service
 public class PaymentEntityManagerImpl implements PaymentEntityManager {
 
-    private final PaymentEntityRepository repository;
+    private PaymentEntityRepository repository;
 
     public PaymentEntityManagerImpl(PaymentEntityRepository repository) {
         this.repository = repository;

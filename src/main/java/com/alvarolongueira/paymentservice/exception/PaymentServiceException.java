@@ -4,9 +4,9 @@ import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 
 public abstract class PaymentServiceException extends RuntimeException {
 
-    private static final long serialVersionUID = -6599889134699424078L;
+    private static long serialVersionUID = -6599889134699424078L;
 
-    private final ErrorPayment errorPayment;
+    private ErrorPayment errorPayment;
 
     public PaymentServiceException(ErrorPayment errorPayment) {
         this.errorPayment = errorPayment;

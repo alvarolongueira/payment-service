@@ -12,7 +12,7 @@ import com.alvarolongueira.paymentservice.repository.entity.AccountEntity;
 @Service
 public class AccountEntityManagerImpl implements AccountEntityManager {
 
-    private final AccountEntityRepository repository;
+    private AccountEntityRepository repository;
 
     public AccountEntityManagerImpl(AccountEntityRepository repository) {
         this.repository = repository;

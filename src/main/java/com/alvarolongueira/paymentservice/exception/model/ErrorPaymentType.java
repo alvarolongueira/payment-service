@@ -5,7 +5,7 @@ public enum ErrorPaymentType {
     NETWORK("network"),
     OTHER("other");
 
-    private final String code;
+    private String code;
 
     ErrorPaymentType(String code) {
         this.code = code;

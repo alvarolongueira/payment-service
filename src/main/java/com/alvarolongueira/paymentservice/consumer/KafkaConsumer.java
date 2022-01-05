@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class KafkaConsumer {
 
-    private final IncomingService incomingService;
+    private IncomingService incomingService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public KafkaConsumer(IncomingService incomingService) {
         this.incomingService = incomingService;
