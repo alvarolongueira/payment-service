@@ -1,16 +1,30 @@
 spring.profiles.active: test
+---
 server:
   port: 8080
+kafka:
+  topic:
+    onlinePayment: online
+    offlinePayment: offline
+---
+spring:
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+  kafka:
+    consumer:
+      group-id: paymentGroup
 ---
 spring:
   profiles: test
   jpa:
     show_sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    platform: postgres
     url: jdbc:postgresql://localhost:5432/payments
-    driverClassName: org.postgresql.Driver
     username: tech
     password: test
+  kafka:
+    bootstrap-servers: localhost:29092
