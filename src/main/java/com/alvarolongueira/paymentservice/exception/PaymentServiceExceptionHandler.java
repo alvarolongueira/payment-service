@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class PaymentServiceExceptionHandler {
 
     @ExceptionHandler(PaymentServiceException.class)
-    public void handleException(PaymentServiceException e) {
+    public void handleException(PaymentServiceException exception) {
         //TODO this
     }
 

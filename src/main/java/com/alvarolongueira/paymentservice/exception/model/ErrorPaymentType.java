@@ -1,4 +1,4 @@
-package com.alvarolongueira.paymentservice.domain;
+package com.alvarolongueira.paymentservice.exception.model;
 
 public enum ErrorPaymentType {
     DATABASE("database"),

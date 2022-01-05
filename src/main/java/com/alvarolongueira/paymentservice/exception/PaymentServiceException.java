@@ -1,8 +1,8 @@
 package com.alvarolongueira.paymentservice.exception;
 
-import com.alvarolongueira.paymentservice.domain.ErrorPayment;
+import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 
-abstract class PaymentServiceException extends RuntimeException {
+public abstract class PaymentServiceException extends RuntimeException {
 
     private static final long serialVersionUID = -6599889134699424078L;
 

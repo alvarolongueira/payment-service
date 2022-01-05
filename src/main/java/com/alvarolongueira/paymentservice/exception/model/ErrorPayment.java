@@ -1,4 +1,4 @@
-package com.alvarolongueira.paymentservice.domain;
+package com.alvarolongueira.paymentservice.exception.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ErrorPayment {
 
-    private long paymentId;
+    private String paymentId;
 
     private ErrorPaymentType type;
 
