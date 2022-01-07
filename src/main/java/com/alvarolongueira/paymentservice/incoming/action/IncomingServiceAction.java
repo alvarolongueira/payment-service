@@ -51,6 +51,8 @@ public class IncomingServiceAction implements IncomingService {
             invocation.invoke();
         } catch (PaymentServiceException exception) {
             this.exceptionHandler.process(exception);
+        } catch (Exception exception) {
+            this.exceptionHandler.process(exception);
         }
     }
 

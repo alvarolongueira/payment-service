@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import com.alvarolongueira.paymentservice.business.ProcessPaymentOnlineService;
 import com.alvarolongueira.paymentservice.domain.Payment;
 import com.alvarolongueira.paymentservice.exception.error.DatabaseException;
+import com.alvarolongueira.paymentservice.exception.error.ValidateThirdPartyPaymentException;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPaymentConverter;
+import com.alvarolongueira.paymentservice.provider.ThirdPartyProvider;
 import com.alvarolongueira.paymentservice.repository.AccountEntityManager;
 import com.alvarolongueira.paymentservice.repository.PaymentEntityManager;
 
@@ -20,18 +22,27 @@ public class ProcessPaymentOnlineServiceAction implements ProcessPaymentOnlineSe
     @Autowired
     private PaymentEntityManager paymentEntityManager;
 
+    @Autowired
+    private ThirdPartyProvider thirdPartyProvider;
+
     public ProcessPaymentOnlineServiceAction() {
 
     }
 
     @Override
     public void process(Payment payment) {
-        this.validate();
+        this.validate(payment);
         this.updateAndSaveEntities(payment);
     }
 
-    private void validate() {
-
+    private void validate(Payment payment) {
+        try {
+            this.thirdPartyProvider.validate(payment);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ErrorPayment error = ErrorPaymentConverter.causeNetwork(payment, e.getMessage());
+            throw new ValidateThirdPartyPaymentException(error);
+        }
     }
 
     private void updateAndSaveEntities(Payment payment) {
