@@ -39,7 +39,6 @@ public class ProcessPaymentOnlineServiceAction implements ProcessPaymentOnlineSe
         try {
             this.thirdPartyProvider.validate(payment);
         } catch (Exception e) {
-            e.printStackTrace();
             ErrorPayment error = ErrorPaymentConverter.causeNetwork(payment, e.getMessage());
             throw new ValidateThirdPartyPaymentException(error);
         }

@@ -15,15 +15,12 @@ import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPaymentConverter;
 import com.alvarolongueira.paymentservice.provider.ThirdPartyProvider;
 import com.alvarolongueira.paymentservice.provider.action.model.ValidatePaymentRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 
 @Service
 public class ThirdPartyProviderAction implements ThirdPartyProvider {
 
     private URI validationUri;
-
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private RestTemplateBuilder restTemplate;

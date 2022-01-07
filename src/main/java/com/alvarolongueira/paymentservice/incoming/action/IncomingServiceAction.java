@@ -9,12 +9,9 @@ import com.alvarolongueira.paymentservice.business.ProcessPaymentOfflineService;
 import com.alvarolongueira.paymentservice.business.ProcessPaymentOnlineService;
 import com.alvarolongueira.paymentservice.domain.Payment;
 import com.alvarolongueira.paymentservice.domain.PaymentType;
-import com.alvarolongueira.paymentservice.exception.PaymentServiceException;
-import com.alvarolongueira.paymentservice.exception.PaymentServiceExceptionHandler;
 import com.alvarolongueira.paymentservice.exception.error.PaymentTypeNotFoundException;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPaymentConverter;
-import com.alvarolongueira.paymentservice.exception.model.ServiceInvocation;
 import com.alvarolongueira.paymentservice.incoming.IncomingService;
 import com.alvarolongueira.paymentservice.incoming.model.IncomingPayment;
 
@@ -27,33 +24,17 @@ public class IncomingServiceAction implements IncomingService {
     @Autowired
     private ProcessPaymentOfflineService offlineService;
 
-    @Autowired
-    private PaymentServiceExceptionHandler exceptionHandler;
 
     @Override
     public void processOnlinePayment(IncomingPayment incoming) {
-        this.handler(() -> {
-            Payment payment = this.convert(incoming);
-            this.onlineService.process(payment);
-        });
+        Payment payment = this.convert(incoming);
+        this.onlineService.process(payment);
     }
 
     @Override
     public void processOfflinePayment(IncomingPayment incoming) {
-        this.handler(() -> {
-            Payment payment = this.convert(incoming);
-            this.offlineService.process(payment);
-        });
-    }
-
-    private void handler(ServiceInvocation invocation) {
-        try {
-            invocation.invoke();
-        } catch (PaymentServiceException exception) {
-            this.exceptionHandler.process(exception);
-        } catch (Exception exception) {
-            this.exceptionHandler.process(exception);
-        }
+        Payment payment = this.convert(incoming);
+        this.offlineService.process(payment);
     }
 
     private Payment convert(IncomingPayment incoming) {
@@ -64,4 +45,5 @@ public class IncomingServiceAction implements IncomingService {
         }
         return new Payment(incoming.getPayment_id(), incoming.getAccount_id(), paymentType.get(), incoming.getCredit_card(), incoming.getAmount());
     }
+
 }
