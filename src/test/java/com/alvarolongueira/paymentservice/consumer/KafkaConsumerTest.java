@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import com.alvarolongueira.paymentservice.business.ProcessPaymentOfflineService;
@@ -29,11 +30,12 @@ public class KafkaConsumerTest {
     private IncomingService service = new IncomingServiceAction();
 
     @InjectMocks
-    private KafkaConsumer consumer = new KafkaConsumer(this.service);
+    private KafkaConsumer consumer;
 
     @Before
     public void setUp() {
-        Mockito.doNothing().when(this.handler).process(Mockito.any(Exception.class));
+        this.consumer = new KafkaConsumer(this.service);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

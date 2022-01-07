@@ -8,7 +8,6 @@ import com.alvarolongueira.paymentservice.domain.Payment;
 import com.alvarolongueira.paymentservice.exception.error.DatabaseException;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPaymentConverter;
-import com.alvarolongueira.paymentservice.provider.ThirdPartyProvider;
 import com.alvarolongueira.paymentservice.repository.AccountEntityManager;
 import com.alvarolongueira.paymentservice.repository.PaymentEntityManager;
 
@@ -20,9 +19,6 @@ public class ProcessPaymentOfflineServiceAction implements ProcessPaymentOffline
 
     @Autowired
     private PaymentEntityManager paymentEntityManager;
-
-    @Autowired
-    private ThirdPartyProvider thirdPartyProvider;
 
     public ProcessPaymentOfflineServiceAction() {
 
