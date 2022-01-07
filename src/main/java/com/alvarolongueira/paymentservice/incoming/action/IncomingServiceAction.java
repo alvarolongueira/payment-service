@@ -24,7 +24,6 @@ public class IncomingServiceAction implements IncomingService {
     @Autowired
     private ProcessPaymentOfflineService offlineService;
 
-
     @Override
     public void processOnlinePayment(IncomingPayment incoming) {
         Payment payment = this.convert(incoming);
