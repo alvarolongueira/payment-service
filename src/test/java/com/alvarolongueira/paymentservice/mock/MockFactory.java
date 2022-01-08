@@ -34,13 +34,13 @@ public class MockFactory {
 
 
     public static String kafkaMessage() {
-        return kafkaMessage("offline");
+        return kafkaMessage("HL2", "offline");
     }
 
-    public static String kafkaMessage(String type) {
+    public static String kafkaMessage(String paymentId, String type) {
         StringBuilder builder = new StringBuilder();
         builder.append("{");
-        builder.append("\"payment_id\": \"HL2\"");
+        builder.append("\"payment_id\": \"" + paymentId + "\"");
         builder.append(",");
         builder.append("\"account_id\": 123");
         builder.append(",");
@@ -54,7 +54,6 @@ public class MockFactory {
         builder.append("}");
         return builder.toString();
     }
-
 
 
 }

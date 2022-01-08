@@ -1,20 +1,57 @@
 package com.alvarolongueira.paymentservice;
 
-import org.junit.Test;
+import java.util.Optional;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.alvarolongueira.paymentservice.consumer.KafkaConsumer;
+import com.alvarolongueira.paymentservice.mock.MockFactory;
+import com.alvarolongueira.paymentservice.repository.database.PaymentEntityRepository;
+import com.alvarolongueira.paymentservice.repository.entity.PaymentEntity;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@DirtiesContext
+@ActiveProfiles(profiles = "test")
 public class PaymentApplicationIntegrationTest {
 
-//    onlinePayment -> {"payment_id": "24929157-5069-43ae-996f-52faa43ce872", "account_id": 583, "payment_type": "offline", "credit_card": "", "amount": 4, "delay": 110}
-//    onlinePayment -> {"payment_id": "e40e2103-6aed-443e-9b38-377b6ca06e25", "account_id": 98, "payment_type": "online", "credit_card": "4212188025892869", "amount": 14, "delay": 426}
+    public static final String PAYMENT_ID = "HLE";
 
-    @Test
-    public void complete_and_successful_online_payment() {
+    //TODO emulate
+    @Autowired
+    private KafkaConsumer kafkaConsumer;
 
+    @Autowired
+    private PaymentEntityRepository paymentEntityRepository;
+
+    @Before
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        if (this.paymentEntityRepository.existsById(PAYMENT_ID)) {
+            this.paymentEntityRepository.deleteById(PAYMENT_ID);
+        }
     }
 
     @Test
-    public void two_offline_payments_equals_second_send_error_log() {
+    public void complete_and_successful_online_payment() throws Exception {
+        Optional<PaymentEntity> entity = this.paymentEntityRepository.findById(PAYMENT_ID);
+        Assert.assertTrue(!entity.isPresent());
 
+        String message = MockFactory.kafkaMessage(PAYMENT_ID, "online");
+        this.kafkaConsumer.onlinePayment(message);
+
+        entity = this.paymentEntityRepository.findById(PAYMENT_ID);
+        Assert.assertTrue(entity.isPresent());
     }
 
 }

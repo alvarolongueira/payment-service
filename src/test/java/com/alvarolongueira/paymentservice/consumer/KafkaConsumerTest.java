@@ -59,7 +59,7 @@ public class KafkaConsumerTest {
 
     @Test
     public void payment_type_unknown() throws Exception {
-        this.consumer.onlinePayment(MockFactory.kafkaMessage("invented"));
+        this.consumer.onlinePayment(MockFactory.kafkaMessage("1", "invented"));
         Mockito.verify(this.handler, Mockito.times(1)).process(Mockito.any(PaymentServiceException.class));
     }
 
