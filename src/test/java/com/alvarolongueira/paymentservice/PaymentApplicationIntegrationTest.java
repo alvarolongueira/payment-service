@@ -8,12 +8,12 @@ public class PaymentApplicationIntegrationTest {
 //    onlinePayment -> {"payment_id": "e40e2103-6aed-443e-9b38-377b6ca06e25", "account_id": 98, "payment_type": "online", "credit_card": "4212188025892869", "amount": 14, "delay": 426}
 
     @Test
-    public void complete_and_successful_payment() {
+    public void complete_and_successful_online_payment() {
 
     }
 
     @Test
-    public void two_payments_with_first_fail_and_second_success() {
+    public void two_offline_payments_equals_second_send_error_log() {
 
     }
 

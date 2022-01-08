@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alvarolongueira.paymentservice.domain.Payment;
 import com.alvarolongueira.paymentservice.exception.error.database.PaymentDuplicatedException;
@@ -21,6 +22,7 @@ public class PaymentEntityManagerImpl implements PaymentEntityManager {
     }
 
     @Override
+    @Transactional
     public void insert(Payment payment) throws PaymentDuplicatedException {
         Optional<PaymentEntity> oldEntity = this.repository.findById(payment.getUniqueId());
         if (oldEntity.isPresent()) {

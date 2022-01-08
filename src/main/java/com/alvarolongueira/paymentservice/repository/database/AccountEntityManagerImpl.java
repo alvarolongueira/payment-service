@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alvarolongueira.paymentservice.exception.error.database.AccountNotFoundException;
 import com.alvarolongueira.paymentservice.repository.AccountEntityManager;
@@ -19,6 +20,7 @@ public class AccountEntityManagerImpl implements AccountEntityManager {
     }
 
     @Override
+    @Transactional
     public void updateAccountDate(long accountId) throws AccountNotFoundException {
         AccountEntity entity = this.repository.findById(accountId).orElseThrow(() -> new AccountNotFoundException("Account not exists with id: " + accountId));
         entity.setLast_payment_date(Timestamp.from(Instant.now()));
