@@ -15,6 +15,7 @@ import com.alvarolongueira.paymentservice.exception.PaymentServiceException;
 import com.alvarolongueira.paymentservice.exception.PaymentServiceExceptionHandler;
 import com.alvarolongueira.paymentservice.incoming.IncomingService;
 import com.alvarolongueira.paymentservice.incoming.action.IncomingServiceAction;
+import com.alvarolongueira.paymentservice.mock.MockFactory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KafkaConsumerTest {
@@ -40,13 +41,13 @@ public class KafkaConsumerTest {
 
     @Test
     public void success_offline_payment() throws Exception {
-        this.consumer.offlinePayment(this.message());
+        this.consumer.offlinePayment(MockFactory.kafkaMessage());
         Mockito.verify(this.offlineService, Mockito.times(1)).process(Mockito.any());
     }
 
     @Test
     public void success_online_payment() throws Exception {
-        this.consumer.onlinePayment(this.message());
+        this.consumer.onlinePayment(MockFactory.kafkaMessage());
         Mockito.verify(this.onlineService, Mockito.times(1)).process(Mockito.any());
     }
 
@@ -58,30 +59,8 @@ public class KafkaConsumerTest {
 
     @Test
     public void payment_type_unknown() throws Exception {
-        this.consumer.onlinePayment(this.message("invented"));
+        this.consumer.onlinePayment(MockFactory.kafkaMessage("invented"));
         Mockito.verify(this.handler, Mockito.times(1)).process(Mockito.any(PaymentServiceException.class));
-    }
-
-    private String message() {
-        return this.message("offline");
-    }
-
-    private String message(String type) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{");
-        builder.append("\"payment_id\": \"24929157-5069-43ae-996f-52faa43ce872\"");
-        builder.append(",");
-        builder.append("\"account_id\": 583");
-        builder.append(",");
-        builder.append("\"payment_type\": \"" + type + "\"");
-        builder.append(",");
-        builder.append("\"credit_card\": \"1234\"");
-        builder.append(",");
-        builder.append("\"amount\": 4");
-        builder.append(",");
-        builder.append("\"delay\": 110");
-        builder.append("}");
-        return builder.toString();
     }
 
 }

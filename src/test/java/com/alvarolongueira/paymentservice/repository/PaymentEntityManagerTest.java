@@ -30,7 +30,7 @@ public class PaymentEntityManagerTest {
 
     @Test
     public void success_save() throws PaymentDuplicatedException {
-        Payment payment = MockFactory.payment();
+        Payment payment = MockFactory.paymentOnline();
         Mockito
                 .when(this.repository.findById(payment.getUniqueId()))
                 .thenReturn(Optional.empty());
@@ -42,7 +42,7 @@ public class PaymentEntityManagerTest {
 
     @Test(expected = PaymentDuplicatedException.class)
     public void exception_when_already_exist() throws PaymentDuplicatedException {
-        Payment payment = MockFactory.payment();
+        Payment payment = MockFactory.paymentOnline();
         Mockito
                 .when(this.repository.findById(payment.getUniqueId()))
                 .thenReturn(Optional.of(MockFactory.paymentEntity()));

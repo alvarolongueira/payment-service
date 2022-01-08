@@ -16,4 +16,8 @@ public class ErrorPaymentConverter {
     public static ErrorPayment causeNetwork(Payment payment, String description) {
         return new ErrorPayment(payment.getUniqueId(), ErrorPaymentType.NETWORK, description);
     }
+
+    public static ErrorPayment causeOther(Payment payment, String description) {
+        return new ErrorPayment(payment.getUniqueId(), ErrorPaymentType.OTHER, description);
+    }
 }

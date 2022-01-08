@@ -12,8 +12,12 @@ import com.alvarolongueira.paymentservice.repository.entity.PaymentEntity;
 
 public class MockFactory {
 
-    public static Payment payment() {
+    public static Payment paymentOnline() {
         return new Payment("A1", 1L, PaymentType.ONLINE, "1234", BigDecimal.TEN);
+    }
+
+    public static Payment paymentOffline() {
+        return new Payment("B2", 2L, PaymentType.OFFLINE, "5678", BigDecimal.ONE);
     }
 
     public static PaymentEntity paymentEntity() {
@@ -27,5 +31,30 @@ public class MockFactory {
         Timestamp createdOn = Timestamp.from(Instant.parse("1993-01-01T18:00:00.00Z"));
         return new AccountEntity(1L, "mail@mail.com", birthdate, lastPayment, createdOn);
     }
+
+
+    public static String kafkaMessage() {
+        return kafkaMessage("offline");
+    }
+
+    public static String kafkaMessage(String type) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("{");
+        builder.append("\"payment_id\": \"HL2\"");
+        builder.append(",");
+        builder.append("\"account_id\": 123");
+        builder.append(",");
+        builder.append("\"payment_type\": \"" + type + "\"");
+        builder.append(",");
+        builder.append("\"credit_card\": \"1234 5678\"");
+        builder.append(",");
+        builder.append("\"amount\": 16");
+        builder.append(",");
+        builder.append("\"delay\": 21");
+        builder.append("}");
+        return builder.toString();
+    }
+
+
 
 }

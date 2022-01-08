@@ -36,7 +36,7 @@ public class ProcessPaymentOfflineServiceTest {
 
     @Test
     public void success() throws Exception {
-        Payment mockPayment = MockFactory.payment();
+        Payment mockPayment = MockFactory.paymentOffline();
         this.service.process(mockPayment);
         Mockito.verify(this.accountEntityManager, Mockito.times(1)).updateAccountDate(Mockito.anyLong());
         Mockito.verify(this.paymentEntityManager, Mockito.times(1)).insert(mockPayment);
@@ -45,7 +45,7 @@ public class ProcessPaymentOfflineServiceTest {
     @Test
     public void database_exception_saving_payment() throws Exception {
         boolean valid = false;
-        Payment mockPayment = MockFactory.payment();
+        Payment mockPayment = MockFactory.paymentOffline();
         Mockito.doThrow(new RuntimeException()).when(this.paymentEntityManager).insert(mockPayment);
 
         try {
@@ -61,13 +61,28 @@ public class ProcessPaymentOfflineServiceTest {
     @Test
     public void database_exception_updating_account() throws Exception {
         boolean valid = false;
-        Payment mockPayment = MockFactory.payment();
+        Payment mockPayment = MockFactory.paymentOffline();
         Mockito.doThrow(new RuntimeException()).when(this.accountEntityManager).updateAccountDate(mockPayment.getAccountId());
 
         try {
             this.service.process(mockPayment);
         } catch (PaymentServiceException exception) {
             if (ErrorPaymentType.DATABASE.equals(exception.getErrorPayment().getType())) {
+                valid = true;
+            }
+        }
+        Assert.assertTrue(valid);
+    }
+
+    @Test
+    public void exception_wrong_payment_type() throws Exception {
+        boolean valid = false;
+        Payment mockPayment = MockFactory.paymentOnline();
+
+        try {
+            this.service.process(mockPayment);
+        } catch (PaymentServiceException exception) {
+            if (ErrorPaymentType.OTHER.equals(exception.getErrorPayment().getType())) {
                 valid = true;
             }
         }

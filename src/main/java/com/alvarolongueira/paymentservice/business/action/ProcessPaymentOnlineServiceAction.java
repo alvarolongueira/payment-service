@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.alvarolongueira.paymentservice.business.ProcessPaymentOnlineService;
 import com.alvarolongueira.paymentservice.domain.Payment;
+import com.alvarolongueira.paymentservice.domain.PaymentType;
 import com.alvarolongueira.paymentservice.exception.error.DatabaseException;
+import com.alvarolongueira.paymentservice.exception.error.InvalidPaymentTypeException;
 import com.alvarolongueira.paymentservice.exception.error.ValidateThirdPartyPaymentException;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPayment;
 import com.alvarolongueira.paymentservice.exception.model.ErrorPaymentConverter;
@@ -36,6 +38,12 @@ public class ProcessPaymentOnlineServiceAction implements ProcessPaymentOnlineSe
     }
 
     private void validate(Payment payment) {
+
+        if (!PaymentType.ONLINE.equals(payment.getType())) {
+            ErrorPayment error = ErrorPaymentConverter.causeOther(payment, "Received online payment with wrong type: " + payment.getType());
+            throw new InvalidPaymentTypeException(error);
+        }
+
         try {
             this.thirdPartyProvider.validate(payment);
         } catch (Exception e) {
