@@ -1,4 +1,4 @@
-# wallet-service
+# payment-service
 
 ## Why
 We need to develop a microservice that receive payments via kafka messages.
